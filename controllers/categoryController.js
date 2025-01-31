@@ -1,6 +1,4 @@
 const Category = require('../models/category');
-const SubCategory = require('../models/Subcategory');
-const Item = require('../models/item');
 
 // CREATE CATEGORY
 exports.createCategory = async (req, res) => {
@@ -9,6 +7,12 @@ exports.createCategory = async (req, res) => {
     await category.save();
     return res.status(201).json(category);
   } catch (error) {
+    if (error.code === 11000) {
+      // Duplicate key error for unique name
+      return res.status(400).json({
+        error: `Category with name "${req.body.name}" already exists.`
+      });
+    }
     return res.status(400).json({ error: error.message });
   }
 };
@@ -25,18 +29,15 @@ exports.getAllCategories = async (req, res) => {
 
 // GET CATEGORY BY NAME OR ID
 exports.getCategory = async (req, res) => {
-  const { identifier } = req.params; // could be name or ID
+  const { identifier } = req.params;
   try {
     let category;
-    // Check if 'identifier' is a valid ObjectId
     const isObjectId = identifier.match(/^[0-9a-fA-F]{24}$/);
 
     if (isObjectId) {
-      // Attempt find by ID
       category = await Category.findById(identifier);
     }
     if (!category) {
-      // If not found by ID or not a valid ID, try find by name
       category = await Category.findOne({ name: identifier });
     }
 
@@ -59,7 +60,13 @@ exports.updateCategory = async (req, res) => {
     }
     return res.json(category);
   } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).json({
+        error: `Category with this name already exists.`
+      });
+    }
     return res.status(400).json({ error: error.message });
   }
 };
+
 

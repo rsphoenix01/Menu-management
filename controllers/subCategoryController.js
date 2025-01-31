@@ -2,17 +2,15 @@ const Category = require('../models/category');
 const SubCategory = require('../models/Subcategory');
 
 // CREATE SUBCATEGORY under a specific Category
-exports.createSubCategory = async (req, res) => {
+exports.createSubCategory = async (req, res) => {v
   try {
-    // We expect categoryId in the route param
     const { categoryId } = req.params;
-    // Check if Category exists
     const category = await Category.findById(categoryId);
     if (!category) {
       return res.status(404).json({ message: 'Category not found' });
     }
 
-    // If taxApplicable or tax is not provided, default from Category
+    // Inherit tax from Category if none is explicitly given
     let { taxApplicable, tax, ...rest } = req.body;
     if (typeof taxApplicable !== 'boolean') {
       taxApplicable = category.taxApplicable;
@@ -28,9 +26,14 @@ exports.createSubCategory = async (req, res) => {
       category: categoryId
     });
     await subCategory.save();
-
     return res.status(201).json(subCategory);
   } catch (error) {
+    if (error.code === 11000) {
+      // Duplicate key for (name, category)
+      return res.status(400).json({
+        error: `SubCategory "${req.body.name}" already exists under this Category.`
+      });
+    }
     return res.status(400).json({ error: error.message });
   }
 };
@@ -49,7 +52,6 @@ exports.getAllSubCategories = async (req, res) => {
 exports.getSubCategoriesByCategory = async (req, res) => {
   const { categoryId } = req.params;
   try {
-    // Check if category exists
     const category = await Category.findById(categoryId);
     if (!category) {
       return res.status(404).json({ message: 'Category not found' });
@@ -93,7 +95,13 @@ exports.updateSubCategory = async (req, res) => {
     }
     return res.json(subCategory);
   } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).json({
+        error: `Another subcategory with that name already exists in this category.`
+      });
+    }
     return res.status(400).json({ error: error.message });
   }
 };
+
 
