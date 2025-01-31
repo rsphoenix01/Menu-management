@@ -8,7 +8,7 @@ const SubCategorySchema = new mongoose.Schema({
   tax: { type: Number, default: null },
   category: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Category',
+    ref: 'category',
     required: true
   }
 });
@@ -16,6 +16,6 @@ const SubCategorySchema = new mongoose.Schema({
 // Create a compound index on (name + category) so that each category can't have duplicate subcategory names
 SubCategorySchema.index({ name: 1, category: 1 }, { unique: true });
 
-module.exports = mongoose.model('SubCategory', SubCategorySchema);
+module.exports = mongoose.model('Subcategory', SubCategorySchema);
 
 

@@ -2,7 +2,7 @@ const Category = require('../models/category');
 const SubCategory = require('../models/Subcategory');
 
 // CREATE SUBCATEGORY under a specific Category
-exports.createSubCategory = async (req, res) => {v
+exports.createSubCategory = async (req, res) => {
   try {
     const { categoryId } = req.params;
     const category = await Category.findById(categoryId);

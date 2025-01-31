@@ -10,5 +10,5 @@ const CategorySchema = new mongoose.Schema({
   taxType: { type: String, default: '' }
 });
 
-module.exports = mongoose.model('Category', CategorySchema);
+module.exports = mongoose.model('category', CategorySchema);
 
