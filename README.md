@@ -42,23 +42,17 @@ MongoDB running locally or via a cloud provider (e.g., MongoDB Atlas)
 Getting Started
 Clone the Repository:
 
-bash
-Copy
-Edit
-git clone https://github.com/your-username/menu-management.git
+
+git clone https://github.com/rsphoenix01/menu-management.git
 cd menu-management
 Install Dependencies:
 
-bash
-Copy
-Edit
+
 npm install
 Configure Database:
 
 The default connection string in config/db.js is:
-js
-Copy
-Edit
+t
 mongoose.connect('mongodb://localhost:27017/menu_management');
 Change this if needed (for a cloud DB).
 Start MongoDB:
@@ -66,9 +60,7 @@ Start MongoDB:
 If running locally, ensure mongod is running.
 Run the Application:
 
-bash
-Copy
-Edit
+
 npm start
 By default, the server runs at http://localhost:5000.
 Test Endpoints:
@@ -80,9 +72,7 @@ Create Category
 
 POST /category
 Body Example:
-json
-Copy
-Edit
+
 {
   "name": "Beverages",
   "image": "https://example.com/beverages.jpg",
@@ -103,18 +93,14 @@ Edit Category
 
 PUT /category/:id
 Body Example:
-json
-Copy
-Edit
+
 { "description": "New description" }
 SubCategory Routes
 Create SubCategory under a Category
 
 POST /subcategory/:categoryId
 Body Example:
-json
-Copy
-Edit
+
 {
   "name": "Tea",
   "image": "https://example.com/tea.jpg",
@@ -139,9 +125,7 @@ Create Item
 Under a Category: POST /item/category/:categoryId
 Under a SubCategory: POST /item/subcategory/:subCategoryId
 Body Example:
-json
-Copy
-Edit
+
 {
   "name": "Green Tea",
   "image": "https://example.com/greentea.jpg",
@@ -165,9 +149,7 @@ Edit Item
 
 PUT /item/:id
 Body Example:
-json
-Copy
-Edit
+
 {
   "discount": 20
 }
@@ -177,9 +159,7 @@ Search Items by Name
 GET /item/search?name=someTerm
 Case-insensitive match.
 Project Structure
-bash
-Copy
-Edit
+
 menu-management/
 ├── config/
 │   └── db.js              # Database connection
